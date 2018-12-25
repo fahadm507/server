@@ -1,35 +1,28 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
 const keys = require('./config/keys');
+require('./models/User');
+//we require User model before we require passport service, because that's where the user is being used.
+require('./services/passport');
+
+mongoose.connect(keys.mongoURI)
+
 const app = express();
 
-passport.use(
-  new GoogleStrategy(
-    {
-    clientID: keys.googleClientID,
-    clientSecret: keys.googleClientSecret,
-    callbackURL: '/auth/google/callback'
-
-    },
-    (accessToken, refreshToken, profile, done) => {
-      console.log("access token", accessToken);
-      console.log("refresh token ", refreshToken);
-      console.log("profile", profile);
-    }
-  )
-);
-
-app.get(
-  '/auth/google',
-  passport.authenticate('google',{
-    scope: ['profile', 'email']
+app.use(cookieSession({
+    //expire in 30days, in milliseconds
+    mexAge: 30 * 24 * 60 * 60 * 1000,
+    //encrypt the cookie
+    keys: [keys.cookieKey]
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
-//route to handle callback from google
-app.get('/auth/google/callback',
-    passport.authenticate('google'));
+require('./routes/authRoutes')(app)
 
 //use port that was defined by Heroku or 5000 if it's undefined
 const PORT = process.env.PORT || 5000;
