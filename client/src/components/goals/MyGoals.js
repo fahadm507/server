@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Route, Link, Redirect } from "react-router-dom";
 import M from "materialize-css";
 import GoalCard from "./GoalCard";
-
 import { GoalDetail } from "./GoalDetail";
 
 import "./MyGoals.css";
@@ -12,14 +11,12 @@ class MyGoals extends Component {
     current: null
   };
   componentDidMount() {
-    console.log("My goals component mounted");
     var elems = document.querySelectorAll(".sidenav");
     var instances = M.Sidenav.init(elems, { preventScrolling: false });
     instances[0].open();
   }
 
   handleGoalDetail = goal => {
-    console.log("about to render goal details ", goal);
     this.setState({ current: goal });
   };
 

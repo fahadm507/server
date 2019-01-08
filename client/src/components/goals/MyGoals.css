@@ -1,3 +1,27 @@
 .waves-effect {
   margin-top: 20px;
 }
+.sidenav li > a {
+  line-height: 20px;
+  background-color: inherit;
+}
+
+.sidenav li > a:hover {
+  background-color: inherit;
+}
+
+.sidenav .collection-item:hover {
+  background-color: #dbd9d9;
+}
+.sidenav li.active-goal {
+  background-color: #dbd9d9;
+}
+
+.sidenav .collection-item:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.collection.with-header .collection-header {
+  margin-bottom: 0;
+}
